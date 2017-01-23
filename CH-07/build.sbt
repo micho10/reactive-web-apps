@@ -6,15 +6,18 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.11.8"
 
+resolvers += "spy Repository" at "http://files.couchbase.com/maven2"
+
 libraryDependencies ++= Seq(
   jdbc,
   cache,
   ws,
   specs2 % Test,
-  "org.postgresql"  % "postgresql"          % "9.4-1201-jdbc41",
-  "org.jooq"        % "jooq"                % "3.7.0",
-  "org.jooq"        % "jooq-codegen-maven"  % "3.7.0",
-  "org.jooq"        % "jooq-meta"           % "3.7.0"
+  "com.github.mumoshu"  %% "play2-memcached-play24" % "0.7.0",
+  "org.postgresql"       % "postgresql"             % "9.4-1201-jdbc41",
+  "org.jooq"             % "jooq"                   % "3.7.0",
+  "org.jooq"             % "jooq-codegen-maven"     % "3.7.0",
+  "org.jooq"             % "jooq-meta"              % "3.7.0"
 )
 
 // Declares the generateJOOQ sbt task

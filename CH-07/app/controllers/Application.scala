@@ -1,7 +1,10 @@
 package controllers
 
+import ch.qos.logback.core.db.dialect.SQLDialect
+import play.api.cache
+import play.api.cache.Cache
 import play.api.data.Form
-import play.api.db.Database
+import play.api.db.{DB, Database}
 import play.api.i18n.MessagesApi
 import play.api.mvc._
 
@@ -99,5 +102,35 @@ object Authenticated extends ActionBuilder[AuthenticatedRequest] with Results {
     }
 
   }
+
+
+  /**
+    * First, try to fetch the user record from the cache, and in the case of a cache miss,
+    * you query it in the DB and set its value in the cache.
+    *
+    * @param id
+    * @return
+    */
+  def fetchUser(id: Long) =
+    // Retrieves the user from the cache using the identifier as a key
+    Cache.getAs[UserRecord](id.toString).map { user =>
+      Some(user)
+    } getOrElse {
+      DB.withConnection { connection =>
+        val sql = DSL.using(connection, SQLDialect.POSTGRES_9_4)
+        val user = Option(
+          sql
+            .selectFrom[UserRecord](USER)
+            .where(USER.ID.equal(id))
+            // Queries for a user in the database in the case of a cache miss
+            .fetchOne()
+        )
+        user.foreach { u =>
+          // Sets the retrieved user in the cache
+          Cache.set(u.getId.toString, u)
+        }
+        user
+      }
+    }
 
 }
