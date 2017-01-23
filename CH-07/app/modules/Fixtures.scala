@@ -11,7 +11,7 @@ import play.api.libs.Crypto
 /**
   * Created by carlos on 23/01/17.
   */
-class Fixtures @Inject() (val cryto: Crypto, val db: Database) extends DatabaseFixtures {
+class Fixtures @Inject() (val crypto: Crypto, val db: Database) extends DatabaseFixtures {
   // Obtains a transaction from Play's DB helper
   db.withTransaction { connection =>
     // Creates a jOOQ DSLContext using the JDBC connection
