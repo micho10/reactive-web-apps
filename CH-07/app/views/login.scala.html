@@ -1,0 +1,14 @@
+@* Passes the form as an input parameter and the Messages API as an implicit parameter *@
+@(form: Form[(String, String)])(implicit messages: Messages)
+
+@* Displays global form errors *@
+@form.globalError.map { error =>
+    <p>@error.message</p>
+}
+
+@* Defines a form that will call the authentication action *@
+@helper.form(controllers.routes.Application.authenticate()) {
+    @helper.inputText(form("email"))
+    @helper.inputPassword(form("password"))
+    <button type="submit">Login</button>
+}
