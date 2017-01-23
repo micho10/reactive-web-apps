@@ -27,7 +27,7 @@ val generateJOOQTask = (baseDirectory, dependencyClasspath in Compile,
     toError(r.run(
       "org.jooq.util.GenerationTool",
       cp.files,
-      Array("conf/chapter7.xml")
+      Array("conf/chapter7.xml"),
       s.log))
   // Returns the generated files so that you can use this task as an sbt source generator
   ((base / "app" / "generated") ** "*.scala").get
