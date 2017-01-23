@@ -1,7 +1,7 @@
-@(message: String)
+@(firstName: String)
 
-@main("Welcome to Play") {
+Hello @firstName !
 
-    @play20.welcome(message)
-
+def index = Authenticated { request =>
+    Ok(views.html.index(request.firstName))
 }
