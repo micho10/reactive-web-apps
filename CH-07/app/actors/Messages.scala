@@ -18,6 +18,8 @@ trait Event {
 
 
 case class RegisterUser(phoneNumber: String, userName: String) extends Command
+case class SubscribeMentions(phoneNumber: String) extends Command
+
 case class Unregistered(phoneNumber: String, userName: String, timestamp: DateTime = DateTime.now) extends Event
 
 case class InvalidCommand(reason: String)

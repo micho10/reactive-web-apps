@@ -20,7 +20,7 @@ libraryDependencies ++= Seq(
   "org.jooq"             % "jooq-meta"                      % "3.7.0",
   "com.ning"             % "async-http-client"              % "1.9.29",
   "joda-time"            % "joda-time"                      % "2.7",
-  "com.github.ironfish" %% "akka-persistance-mongo-casbah"  % "0.7.6"
+  "com.github.ironfish" %% "akka-persistence-mongo-casbah"  % "0.7.6"
 )
 
 // Declares the generateJOOQ sbt task
