@@ -1,7 +1,7 @@
 package actors
 
-import akka.actor.Actor.Receive
 import akka.actor.{ActorLogging, Props}
+import akka.persistence.{PersistentActor, RecoveryCompleted, RecoveryFailure}
 
 /**
   * Created by carlos on 26/01/17.
@@ -17,7 +17,7 @@ class CQRSCommandHandler extends PersistentActor with ActorLogging {
     // Handles the end of recovery
     case RecoveryCompleted      => log.info("Recovery completed")
     // Handles events that are replayed during recovery
-    case evt: Event             => handleEvent(evt)
+    case evt: Event             => handleEvent(evt, true)
   }
 
 
@@ -41,9 +41,12 @@ class CQRSCommandHandler extends PersistentActor with ActorLogging {
         // Passes the phone number and user name as constructor paramenters to the ClientCommandHandler
         props = Props(classOf[ClientCommandHandler], phoneNumber, userName),
         name = phoneNumber)
-      if (recoveryFinished)
+      if (recoveryFinished) {
         // Informs the client that registration worked if you're not in recovery
         sender() ! registered
+        // Publishing the event as is on the event stream
+        context.system.eventStream.publish(registered)
+      }
   }
 
 }
