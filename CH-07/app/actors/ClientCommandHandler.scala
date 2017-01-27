@@ -27,7 +27,7 @@ class ClientCommandHandler(phoneNumber: String, userName: String) extends Persis
   override def persistenceId: String = phoneNumber
 
   var subscribedSMSHandler: Option[ActorRef] = None
-  var lastSeenMentionTime: Option[ActorRef] = None
+  var lastSeenMentionTime: Option[DateTime] = None
   var subscriptionScheduler: Option[DateTime] = None
   var unacknowledgedMentions = List.empty[MentionReceived]
 
