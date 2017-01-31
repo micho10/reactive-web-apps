@@ -1,9 +1,9 @@
 package actors
 
+import java.sql.Timestamp
+
 import akka.actor.{Actor, ActorLogging}
 import play.api.db.Database
-
-import scala.util.Properties
 
 /**
   * Created by carlos on 30/01/17.
@@ -16,7 +16,13 @@ class CQRSEventHandler(database: Database) extends Actor with ActorLogging {
   }
 
   override def receive = {
-    case UserRegistered(phoneNumber, userName, timestamp) => //TODO
+    case UserRegistered(phoneNumber, userName, timestamp) =>
+      database.withTransaction { sql =>
+        sql.insertInto(TWITTER_USER)
+          .columns(TWITTER_USER.CREATED_ON, TWITTER_USER.PHONE_NUMBER, TWITTER_USER.TWITTER_USER_NAME)
+          .values(new Timestamp(timestamp.getMillis), phoneNumber, userName)
+          .execute()
+      }
 
     case ClientEvent(phoneNumber, userName, MentionSubscribed(timestamp), _) =>
       database.withTransaction { sql =>
@@ -45,7 +51,38 @@ class CQRSEventHandler(database: Database) extends Actor with ActorLogging {
       }
 
     case ClientEvent(phoneNumber, userName, MentionReceived(id, created_on, from, text, timestamp), _) =>
-      //TODO
+      database.withTransaction { sql =>
+        sql.insertInto(MENTIONS)
+          .columns(
+            MENTIONS.USER_ID,
+            MENTIONS.CREATED_ON,
+            MENTIONS.TWEET_ID,
+            MENTIONS.AUTHOR_USER_NAME,
+            MENTIONS.TEXT
+          )
+          .select(
+            select(
+              TWITTER_USER.ID,
+              value(new Timestamp(timestamp.getMillis)),
+              value(id),
+              value(from),
+              value(text)
+            )
+            .from(TWITTER_USER)
+            .where(
+              TWITTER_USER.PHONE_NUMBER.equal(phoneNumber)
+              .and(
+                TWITTER_USER.TWITTER_USER_NAME.equal(userName)
+              )
+            )
+          ).execute()
+      }
   }
 
+}
+
+
+
+object CQRSEventHandler {
+  def props(database: Database) = Props(classOf[CQRSEventHandler], database)
 }
