@@ -23,3 +23,12 @@ resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 // Play provides two styles of routers, one expects its actions to be injected, the
 // other, legacy style, accesses its actions statically.
 routesGenerator := InjectedRoutesGenerator
+
+// Adds rjs as first stage of the assets pipeline
+pipelineStages := Seq(rjs)
+
+// Specifies that the main RequireJS module is called "application" (this will resolve to our application.js file)
+RjsKeys.mainModule := "application"
+
+// Specifies that the configuration for RequireJS is located in the application module
+RjsKeys.mainConfig := "application"
