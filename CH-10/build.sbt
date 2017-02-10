@@ -1,5 +1,3 @@
-import com.sun.corba.se.impl.logging.ORBUtilSystemException
-
 name := """CH-10"""
 
 version := "1.0-SNAPSHOT"
@@ -13,12 +11,9 @@ lazy val root = (project in file(".")).enablePlugins(
 scalaVersion := "2.11.8"
 
 libraryDependencies ++= Seq(
-  jdbc,
-  cache,
-  ws,
   "org.webjars"             %% "webjars-play"             % "2.4.0-1",
   "org.webjars"              %  "jquery"                  % "2.1.4",
-  "org.seleniumhq.selenium"  % "selenium-firefox-driver"  % "2.53.0",
+  "org.seleniumhq.selenium"  % "selenium-firefox-driver"  % "3.0.1",
   "org.scalatest"           %% "scalatest"                % "2.2.1"     % "test",
   "org.scalatestplus"       %% "play"                     % "1.4.0-M4"  % "test"
 )
