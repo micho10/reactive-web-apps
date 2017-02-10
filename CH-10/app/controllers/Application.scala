@@ -5,6 +5,7 @@ import javax.inject.Inject
 import play.api.Configuration
 import play.api.mvc._
 
+
 class Application @Inject()(configuration: Configuration) extends Controller {
 
   def index = Action { implicit request =>
