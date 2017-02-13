@@ -32,3 +32,24 @@ RjsKeys.mainModule := "application"
 
 // Specifies that the configuration for RequireJS is located in the application module
 RjsKeys.mainConfig := "application"
+
+
+/***** Debian Packaging config *****/
+
+// Names the maintainer of the package
+maintainer := "John Doe <john@doe.com>"
+
+// Short summary of the package
+packageSummary in Linux := "Sample Reactive Web Application"
+
+// Long summary of the package
+packageDescription := "This package installs the Play Application used as an example"
+
+// Sets the service loading system to SystemD, which is the default in Debian Jessie
+severLoading in Debian := ServerLoader.Systemd
+
+
+/***** Docker Packaging config *****/
+
+// Open up ports 9000 and 9443 for HTTP and HTTPS
+dockerExposedPorts in Docker := Seq(9000, 9443)
