@@ -3,6 +3,7 @@ package actors
 import actors.RandomNumberComputer.{ComputeRandomNumber, RandomNumber}
 import akka.actor.ActorSystem
 import akka.testkit._
+import com.typesafe.config.ConfigFactory
 
 import scala.concurrent.duration._
 import org.scalatest._
@@ -22,9 +23,15 @@ class RandomNumberComputerSpec(_system: ActorSystem) extends TestKit(_system) wi
   with ShouldMatchers with BeforeAndAfterAll {
 
   // Defines a default constructor that provides an ActorSystem
-  def this() = this(ActorSystem("RandomNumberComputerSpec"))
+  def this() = this(ActorSystem(
+    "RandomNumberComputerSpec",
+    // Customize the scaling factor
+    ConfigFactory.parseString(
+      s"akka.test.timefactor = " + sys.props.getOrElse("SCALING_FACTOR", default = "1.0")
+    )
+  ))
 
-  override def afterAll: Unit = {
+  override def afterAll = {
     // Shuts down the ActorSystem after all cases have run
     TestKit.shutdownActorSystem(system)
   }
