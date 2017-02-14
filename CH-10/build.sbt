@@ -1,3 +1,5 @@
+import com.typesafe.sbt.packager.archetypes.ServerLoader
+
 name := """CH-10"""
 
 version := "1.0-SNAPSHOT"
@@ -46,7 +48,7 @@ packageSummary in Linux := "Sample Reactive Web Application"
 packageDescription := "This package installs the Play Application used as an example"
 
 // Sets the service loading system to SystemD, which is the default in Debian Jessie
-severLoading in Debian := ServerLoader.Systemd
+serverLoading in Debian := ServerLoader.Systemd
 
 
 /***** Docker Packaging config *****/
