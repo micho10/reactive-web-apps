@@ -1,6 +1,8 @@
 package services
 
 import scala.concurrent.Future
+import scala.util.control.NonFatal
+import scala.concurrent.ExecutionContext.Implicits._
 
 /**
   * Defines our component as a trait to ease testing
@@ -19,27 +21,9 @@ trait RandomNumberService {
   * @param dice
   */
 class DiceDrivenRandomNumberService(dice: DiceService) extends RandomNumberService {
-  override def generateRandomNumber: Future[Int] = dice.throwDice
-}
-
-
-
-/**
-  * Defines the DiceService implementation as a trait as well
-  */
-trait DiceService {
-  def throwDice: Future[Int]
-}
-
-
-
-/**
-  * Defines a simple but powerful implementation of a DiceService
-  */
-class RollingDiceService extends DiceService {
-  override def throwDice: Future[Int] =
-    Future.successful {
-      4 // chosen by fair dice roll.
-        // guaranteed to be random.
-    }
+  // Recovers failure using the recoverWith handler
+  override def generateRandomNumber: Future[Int] = dice.throwDice.recoverWith {
+    // Simply invokes the method again until it works
+    case NonFatal(t) => generateRandomNumber
+  }
 }
