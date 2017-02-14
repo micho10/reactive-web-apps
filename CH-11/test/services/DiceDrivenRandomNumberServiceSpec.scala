@@ -38,7 +38,7 @@ class DiceDrivenRandomNumberServiceSpec extends FlatSpec with ScalaFutures with 
     // Invokes the service method we want to test and passes it to ScalaTest's whenReady function
     whenReady(randomNumberService.generateRandomNumber) { result =>
       // Verifies the correctness of the result
-      result shouldBe(4)
+      result shouldBe 4
     }
   }
 
