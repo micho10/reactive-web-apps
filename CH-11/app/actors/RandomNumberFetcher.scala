@@ -2,9 +2,9 @@ package actors
 
 import actors.RandomNumberFetcher.{FetchRandomNumber, RandomNumber}
 import akka.actor.{Actor, Props}
+import akka.pattern.pipe
 import play.api.libs.json.{JsArray, Json}
 import play.api.libs.ws.WSClient
-import akka.pattern.pipe
 
 import scala.concurrent.Future
 

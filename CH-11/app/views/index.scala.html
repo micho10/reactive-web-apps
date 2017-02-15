@@ -1,7 +1,12 @@
-@(message: String)
-
-@main("Welcome to Play") {
-
-    @play20.welcome(message)
-
+@* Expects the flash scope as implicit parameter *@
+@()(implicit flash: Flash)
+@main("Welcome") {
+    @flash.get("result").map { result =>
+        @* Displays the result if there's any *@
+        <p>@result</p>
+    }
+    @helper.form(routes.Application.compute()) {
+        @* Gives the user a button to obtain a random number *@
+        <button type="submit">Get random number</button>
+    }
 }
