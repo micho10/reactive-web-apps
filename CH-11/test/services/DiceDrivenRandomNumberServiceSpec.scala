@@ -19,6 +19,9 @@ import scala.concurrent.Future
   */
 class DiceDrivenRandomNumberServiceSpec extends FlatSpec with ScalaFutures with ShouldMatchers {
 
+  /**
+    * Test a service for responsiveness
+    */
   "The DiceDrivenRandomNumberService" should "return a number provided by a dice" in {
 
     // Provides a custom PatienceConfig
@@ -45,6 +48,9 @@ class DiceDrivenRandomNumberServiceSpec extends FlatSpec with ScalaFutures with 
   }
 
 
+  /**
+    * Test a service for resilience
+    */
   it should "be able to cope with problematic dice throws" in {
     // Implements a DiceService that will fail one time out of two, including the first time it's executed
     val overzealousDiceThrowingService = new DiceService {
